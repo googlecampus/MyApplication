@@ -2,6 +2,6 @@
     <string name="app_name">My Application</string>
 
     <string name="hello_world">Hello android world!</string>
-    <string name="hello_world2">Hello ??? aklsadkfjh q world!</string>
+    <string name="hello_world2">Hello my world!</string>
     <string name="action_settings">Settings</string>
 </resources>
