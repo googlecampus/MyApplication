@@ -26,7 +26,13 @@ public class MainActivity extends ActionBarActivity {
         mTextView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startGoogleCampusActivity();
+                if (mTextView1.isSelected()) {
+                    mTextView1.setSelected(false);
+                    mImage1.setImageResource(R.drawable.fox);
+                } else {
+                    mTextView1.setSelected(true);
+                    mImage1.setImageResource(R.drawable.panda);
+                }
             }
         });
 
@@ -42,7 +48,6 @@ public class MainActivity extends ActionBarActivity {
         mImage1 = (ImageView) findViewById(R.id.image1);
         mImage2 = (ImageView) findViewById(R.id.image2);
         mTextView3.setText("Word Changed");
-        mImage1.setImageResource(R.drawable.fox);
         mImage2.setImageResource(R.drawable.panda);
     }
 
