@@ -21,8 +21,7 @@ public class MainActivity extends ActionBarActivity {
         mTextView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GoogleCampusActivity.class);
-                startActivity(intent);
+                startGoogleCampusActivity();
             }
         });
 
@@ -30,10 +29,14 @@ public class MainActivity extends ActionBarActivity {
         mTextView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GoogleCampusActivity.class);
-                startActivity(intent);
+                startGoogleCampusActivity();
             }
         });
+    }
+
+    private void startGoogleCampusActivity() {
+        Intent intent = new Intent(MainActivity.this, GoogleCampusActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -52,8 +55,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, GoogleCampusActivity.class);
-            startActivity(intent);
+            startGoogleCampusActivity();
             return true;
         }
 
