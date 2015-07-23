@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
 
     private View mTextView1;
     private View mTextView2;
-    private View mTextView3;
+    private TextView mTextView3;
     private View mImage1;
     private View mImage2;
 
@@ -36,10 +37,10 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        mTextView3 = findViewById(R.id.text3);
+        mTextView3 = (TextView) findViewById(R.id.text3);
         mImage1 = findViewById(R.id.image1);
         mImage2 = findViewById(R.id.image2);
-        mTextView3.setVisibility(View.GONE);
+        mTextView3.setText("Word Changed");
         mImage1.setVisibility(View.GONE);
         mImage2.setVisibility(View.GONE);
     }
