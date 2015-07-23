@@ -16,7 +16,7 @@ public class MainActivity extends ActionBarActivity {
     private View mTextView2;
     private TextView mTextView3;
     private ImageView mImage1;
-    private View mImage2;
+    private ImageView mImage2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +40,10 @@ public class MainActivity extends ActionBarActivity {
 
         mTextView3 = (TextView) findViewById(R.id.text3);
         mImage1 = (ImageView) findViewById(R.id.image1);
-        mImage2 = findViewById(R.id.image2);
+        mImage2 = (ImageView) findViewById(R.id.image2);
         mTextView3.setText("Word Changed");
         mImage1.setImageResource(R.drawable.fox);
-        mImage2.setVisibility(View.GONE);
+        mImage2.setImageResource(R.drawable.panda);
     }
 
     private void startGoogleCampusActivity() {
