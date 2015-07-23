@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -14,7 +15,7 @@ public class MainActivity extends ActionBarActivity {
     private View mTextView1;
     private View mTextView2;
     private TextView mTextView3;
-    private View mImage1;
+    private ImageView mImage1;
     private View mImage2;
 
     @Override
@@ -38,10 +39,10 @@ public class MainActivity extends ActionBarActivity {
         });
 
         mTextView3 = (TextView) findViewById(R.id.text3);
-        mImage1 = findViewById(R.id.image1);
+        mImage1 = (ImageView) findViewById(R.id.image1);
         mImage2 = findViewById(R.id.image2);
         mTextView3.setText("Word Changed");
-        mImage1.setVisibility(View.GONE);
+        mImage1.setImageResource(R.drawable.fox);
         mImage2.setVisibility(View.GONE);
     }
 
