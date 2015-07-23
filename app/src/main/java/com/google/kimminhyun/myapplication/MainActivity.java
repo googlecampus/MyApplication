@@ -13,7 +13,7 @@ import android.widget.TextView;
 public class MainActivity extends ActionBarActivity {
 
     private View mTextView1;
-    private View mTextView2;
+    private View mButton1;
     private TextView mTextView3;
     private ImageView mImage1;
     private ImageView mImage2;
@@ -36,8 +36,8 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        mTextView2 = findViewById(R.id.text2);
-        mTextView2.setOnClickListener(new View.OnClickListener() {
+        mButton1 = findViewById(R.id.button1);
+        mButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startGoogleCampusActivity();
