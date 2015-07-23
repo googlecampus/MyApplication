@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">나의 앱</string>
+
+    <string name="hello_world">안녕하세요1.</string>
+    <string name="hello_world2">안녕하세요2.</string>
+    <string name="action_settings">설정</string>
+    <string name="hello_world3">안녕하세요3.</string>
+    <string name="wow">두번째 액티비티 입니다.</string>
+</resources>
