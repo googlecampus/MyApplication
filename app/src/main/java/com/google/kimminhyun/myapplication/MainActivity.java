@@ -11,6 +11,7 @@ import android.view.View;
 public class MainActivity extends ActionBarActivity {
 
     private View mTextView1;
+    private View mTextView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +19,15 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         mTextView1 = findViewById(R.id.text1);
         mTextView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GoogleCampusActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mTextView2 = findViewById(R.id.text2);
+        mTextView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, GoogleCampusActivity.class);
