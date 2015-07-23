@@ -12,6 +12,9 @@ public class MainActivity extends ActionBarActivity {
 
     private View mTextView1;
     private View mTextView2;
+    private View mTextView3;
+    private View mImage1;
+    private View mImage2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,13 @@ public class MainActivity extends ActionBarActivity {
                 startGoogleCampusActivity();
             }
         });
+
+        mTextView3 = findViewById(R.id.text3);
+        mImage1 = findViewById(R.id.image1);
+        mImage2 = findViewById(R.id.image2);
+        mTextView3.setVisibility(View.GONE);
+        mImage1.setVisibility(View.GONE);
+        mImage2.setVisibility(View.GONE);
     }
 
     private void startGoogleCampusActivity() {
