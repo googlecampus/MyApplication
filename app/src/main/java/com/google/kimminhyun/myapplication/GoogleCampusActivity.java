@@ -6,9 +6,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+
+import java.util.List;
 
 /**
  * Created by kimminhyun on 7/16/15.
@@ -35,6 +39,18 @@ public class GoogleCampusActivity extends Activity {
                     }
                 });
 
+            }
+        });
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("TestObject");
+        query.whereExists("text");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for (int i = 0; i < list.size(); ++i) {
+                    ParseObject object = list.get(i);
+                    Toast.makeText(GoogleCampusActivity.this, object.getString("text"), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
