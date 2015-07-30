@@ -6,4 +6,5 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world3">I\'m Helloworld3.</string>
     <string name="wow">Wow. Second Activity.</string>
+    <string name="save">Save</string>
 </resources>
