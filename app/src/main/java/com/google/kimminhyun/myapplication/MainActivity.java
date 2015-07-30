@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -49,6 +52,18 @@ public class MainActivity extends ActionBarActivity {
         mImage2 = (ImageView) findViewById(R.id.image2);
         mTextView3.setText("Word Changed");
         mImage2.setImageResource(R.drawable.panda);
+
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "D5RlFIWu0Vjf0quz7R4wo5P4IYSLgVvappZ3RwbL", "SiqgMDRNizUr0exYifzaTGKuZfLviVUXpAV9Z85O");
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+
+        ParseObject testObject2 = new ParseObject("TestObject");
+        testObject2.put("google", "campus");
+        testObject2.saveInBackground();
     }
 
     private void startGoogleCampusActivity() {
