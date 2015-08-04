@@ -1,7 +1,9 @@
 package com.google.kimminhyun.myapplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -21,6 +23,8 @@ import java.util.List;
  * Created by kimminhyun on 7/16/15.
  */
 public class GoogleCampusActivity extends Activity {
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private EditText mEditText;
     private ListView mListView;
@@ -49,6 +53,14 @@ public class GoogleCampusActivity extends Activity {
             }
         });
 
+        View cameraButton = findViewById(R.id.camera_button);
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+
         mAdapter = new ArrayAdapter<String>(this, R.layout.text_view) {
             @Override
             public int getCount() {
@@ -63,6 +75,13 @@ public class GoogleCampusActivity extends Activity {
         mListView = (ListView) findViewById(R.id.list);
         mListView.setAdapter(mAdapter);
         fetchData();
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     private void fetchData() {
