@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -33,7 +37,7 @@ public class GoogleCampusActivity extends Activity {
     private EditText mEditText;
     private ListView mListView;
     private List<ParseObject> mList = new ArrayList<ParseObject>();
-    private ArrayAdapter<String> mAdapter;
+    private BaseAdapter mAdapter;
     private ImageView mImageView;
 
     @Override
@@ -66,17 +70,7 @@ public class GoogleCampusActivity extends Activity {
             }
         });
 
-        mAdapter = new ArrayAdapter<String>(this, R.layout.text_view) {
-            @Override
-            public int getCount() {
-                return mList.size();
-            }
-
-            @Override
-            public String getItem(int position) {
-                return mList.get(position).getString("text");
-            }
-        };
+        mAdapter = new ImageAndTextAdapter();
         mListView = (ListView) findViewById(R.id.list);
         mListView.setAdapter(mAdapter);
 
@@ -121,8 +115,14 @@ public class GoogleCampusActivity extends Activity {
     }
 
     private void fetchData() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("TestObject");
-        query.whereExists("text");
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("TestObject");
+        query1.whereExists("text");
+        ParseQuery<ParseObject> query2 = ParseQuery.getQuery("TestObject");
+        query2.whereExists("image");
+        List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+        queries.add(query1);
+        queries.add(query2);
+        ParseQuery<ParseObject> query = ParseQuery.or(queries);
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -131,5 +131,37 @@ public class GoogleCampusActivity extends Activity {
                 mAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    class ImageAndTextAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mList.size();
+        }
+
+        @Override
+        public ParseObject getItem(int position) {
+            return mList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = View.inflate(GoogleCampusActivity.this, R.layout.image_and_text_view, null);
+            }
+            TextView textView = (TextView) convertView.findViewById(R.id.text);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+            ParseObject object = getItem(position);
+            if (object.has("text")) {
+                textView.setText(object.getString("text"));
+            }
+            return convertView;
+        }
     }
 }
