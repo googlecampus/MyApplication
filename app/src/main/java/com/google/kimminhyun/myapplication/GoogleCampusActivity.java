@@ -22,6 +22,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -160,6 +161,10 @@ public class GoogleCampusActivity extends Activity {
             ParseObject object = getItem(position);
             if (object.has("text")) {
                 textView.setText(object.getString("text"));
+            }
+            if (object.has("image")) {
+                ParseFile imageFile = object.getParseFile("image");
+                Picasso.with(GoogleCampusActivity.this).load(imageFile.getUrl()).into(imageView);
             }
             return convertView;
         }
