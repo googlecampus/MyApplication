@@ -7,4 +7,5 @@
     <string name="hello_world3">I\'m Helloworld3.</string>
     <string name="wow">Wow. Second Activity.</string>
     <string name="save">Save</string>
+    <string name="camera">Camera</string>
 </resources>
