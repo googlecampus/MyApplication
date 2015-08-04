@@ -14,10 +14,12 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +96,26 @@ public class GoogleCampusActivity extends Activity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] byteData = stream.toByteArray();
+
+            final ParseFile file = new ParseFile("capture.jpg", byteData);
+            file.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    ParseObject testObject = new ParseObject("TestObject");
+                    testObject.put("image", file);
+                    testObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Toast.makeText(GoogleCampusActivity.this, "Image Saved Successfully", Toast.LENGTH_LONG).show();
+                            fetchData();
+                        }
+                    });
+                }
+            });
+
             mImageView.setImageBitmap(imageBitmap);
         }
     }
