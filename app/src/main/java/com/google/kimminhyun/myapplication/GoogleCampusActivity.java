@@ -2,11 +2,13 @@ package com.google.kimminhyun.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ public class GoogleCampusActivity extends Activity {
     private ListView mListView;
     private List<ParseObject> mList = new ArrayList<ParseObject>();
     private ArrayAdapter<String> mAdapter;
+    private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,8 @@ public class GoogleCampusActivity extends Activity {
         };
         mListView = (ListView) findViewById(R.id.list);
         mListView.setAdapter(mAdapter);
+
+        mImageView = (ImageView) findViewById(R.id.image);
         fetchData();
     }
 
@@ -81,6 +86,15 @@ public class GoogleCampusActivity extends Activity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mImageView.setImageBitmap(imageBitmap);
         }
     }
 

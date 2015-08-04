@@ -26,9 +26,17 @@
         android:layout_toLeftOf="@+id/button"
         android:text="@string/camera"/>
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/edit_text"
+        android:background="@android:color/black"
+        android:layout_toLeftOf="@+id/camera_button"/>
+
     <ListView
         android:id="@+id/list"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
