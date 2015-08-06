@@ -158,7 +158,9 @@ public class GoogleCampusActivity extends Activity {
             }
             TextView textView = (TextView) convertView.findViewById(R.id.text);
             ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+            TextView likeNumberView = (TextView) convertView.findViewById(R.id.like_number);
             final ParseObject object = getItem(position);
+            likeNumberView.setText(String.valueOf(object.getInt("like")));
             if (object.has("text")) {
                 textView.setVisibility(View.VISIBLE);
                 textView.setText(object.getString("text"));
