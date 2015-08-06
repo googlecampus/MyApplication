@@ -8,4 +8,5 @@
     <string name="wow">두번째 액티비티 입니다.</string>
     <string name="save">저장</string>
     <string name="camera">카메라</string>
+    <string name="like">좋아요</string>
 </resources>

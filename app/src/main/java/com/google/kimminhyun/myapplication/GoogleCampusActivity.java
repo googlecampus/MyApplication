@@ -158,13 +158,26 @@ public class GoogleCampusActivity extends Activity {
             }
             TextView textView = (TextView) convertView.findViewById(R.id.text);
             ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
-            ParseObject object = getItem(position);
+            final ParseObject object = getItem(position);
             if (object.has("text")) {
                 textView.setVisibility(View.VISIBLE);
                 textView.setText(object.getString("text"));
             } else {
                 textView.setVisibility(View.GONE);
             }
+            View like = convertView.findViewById(R.id.like);
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    object.increment("like");
+                    object.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Toast.makeText(GoogleCampusActivity.this, "Liked Successfully : " + object.getInt("like"), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
             if (object.has("image")) {
                 imageView.setVisibility(View.VISIBLE);
                 ParseFile imageFile = object.getParseFile("image");
