@@ -176,6 +176,7 @@ public class GoogleCampusActivity extends Activity {
                         @Override
                         public void done(ParseException e) {
                             Toast.makeText(GoogleCampusActivity.this, "Liked Successfully : " + object.getInt("like"), Toast.LENGTH_LONG).show();
+                            mAdapter.notifyDataSetChanged();
                         }
                     });
                 }
