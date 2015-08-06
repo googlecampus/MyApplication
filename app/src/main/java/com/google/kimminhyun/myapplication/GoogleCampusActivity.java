@@ -160,11 +160,17 @@ public class GoogleCampusActivity extends Activity {
             ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
             ParseObject object = getItem(position);
             if (object.has("text")) {
+                textView.setVisibility(View.VISIBLE);
                 textView.setText(object.getString("text"));
+            } else {
+                textView.setVisibility(View.GONE);
             }
             if (object.has("image")) {
+                imageView.setVisibility(View.VISIBLE);
                 ParseFile imageFile = object.getParseFile("image");
                 Picasso.with(GoogleCampusActivity.this).load(imageFile.getUrl()).into(imageView);
+            } else {
+                imageView.setVisibility(View.GONE);
             }
             return convertView;
         }
