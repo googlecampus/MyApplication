@@ -20,6 +20,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
@@ -177,6 +178,10 @@ public class GoogleCampusActivity extends Activity {
                         public void done(ParseException e) {
                             Toast.makeText(GoogleCampusActivity.this, "Liked Successfully : " + object.getInt("like"), Toast.LENGTH_LONG).show();
                             mAdapter.notifyDataSetChanged();
+                            ParsePush push = new ParsePush();
+                            push.setChannel("like_number");
+                            push.setMessage(String.valueOf(object.getInt("like")));
+                            push.sendInBackground();
                         }
                     });
                 }

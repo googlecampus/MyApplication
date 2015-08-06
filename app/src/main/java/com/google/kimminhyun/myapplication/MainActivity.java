@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -56,6 +58,8 @@ public class MainActivity extends ActionBarActivity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "D5RlFIWu0Vjf0quz7R4wo5P4IYSLgVvappZ3RwbL", "SiqgMDRNizUr0exYifzaTGKuZfLviVUXpAV9Z85O");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+        ParsePush.subscribeInBackground("like_number");
     }
 
     private void startGoogleCampusActivity() {
