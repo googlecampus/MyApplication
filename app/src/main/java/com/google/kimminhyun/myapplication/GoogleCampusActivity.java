@@ -191,12 +191,9 @@ public class GoogleCampusActivity extends Activity {
                             ParsePush push = new ParsePush();
                             JSONObject data = new JSONObject();
                             try {
-                                data.put("alert", "Liked!");
-                                data.put("badge", "Increment");
-                                data.put("sound", "cheering.caf");
+                                data.put("count", object.getInt("like"));
                                 push.setChannel("like_number");
                                 push.setData(data);
-//                                push.setMessage(String.valueOf(object.getInt("like")));
                                 push.sendInBackground();
                             } catch (JSONException e1) {
                                 e1.printStackTrace();

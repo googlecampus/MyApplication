@@ -5,10 +5,14 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.parse.ParseBroadcastReceiver;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.greenrobot.event.EventBus;
 
@@ -27,11 +31,19 @@ public class CustomParsePushBroadcaseReceiver extends ParseBroadcastReceiver {
 
         EventBus.getDefault().post(new LikeEvent());
 
+        Bundle extras = intent.getExtras();
+        JSONObject jsonData = null;
+        int count = 0;
+        try {
+            jsonData = new JSONObject(extras.getString("com.parse.Data"));
+            count = jsonData.getInt("count");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
+        new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.fox)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
+                        .setContentTitle("Liked! : " + count);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, GoogleCampusActivity.class);
 
