@@ -25,6 +25,9 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -186,9 +189,18 @@ public class GoogleCampusActivity extends Activity {
                             Toast.makeText(GoogleCampusActivity.this, "Liked Successfully : " + object.getInt("like"), Toast.LENGTH_LONG).show();
                             mAdapter.notifyDataSetChanged();
                             ParsePush push = new ParsePush();
-                            push.setChannel("like_number");
-                            push.setMessage(String.valueOf(object.getInt("like")));
-                            push.sendInBackground();
+                            JSONObject data = new JSONObject();
+                            try {
+                                data.put("alert", "Liked!");
+                                data.put("badge", "Increment");
+                                data.put("sound", "cheering.caf");
+                                push.setChannel("like_number");
+                                push.setData(data);
+//                                push.setMessage(String.valueOf(object.getInt("like")));
+                                push.sendInBackground();
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
                         }
                     });
                 }
