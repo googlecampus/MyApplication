@@ -29,6 +29,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by kimminhyun on 7/16/15.
  */
@@ -77,6 +79,11 @@ public class GoogleCampusActivity extends Activity {
         mListView.setAdapter(mAdapter);
 
         mImageView = (ImageView) findViewById(R.id.image);
+        fetchData();
+        EventBus.getDefault().register(this);
+    }
+
+    public void onEvent(LikeEvent event) {
         fetchData();
     }
 

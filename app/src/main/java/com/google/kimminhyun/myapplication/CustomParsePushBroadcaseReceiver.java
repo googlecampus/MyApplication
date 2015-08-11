@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import com.parse.ParseBroadcastReceiver;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Custom receiver for customizing when push received.
  *
@@ -16,11 +18,6 @@ public class CustomParsePushBroadcaseReceiver extends ParseBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (intent.getExtras() != null) {
-            Toast.makeText(context, "intent extra : " + intent.getExtras().toString(), Toast.LENGTH_LONG).show();
-        }
-        if (intent.getDataString() != null) {
-            Toast.makeText(context, "intent data : " + intent.getDataString(), Toast.LENGTH_LONG).show();
-        }
+        EventBus.getDefault().post(new LikeEvent());
     }
 }
