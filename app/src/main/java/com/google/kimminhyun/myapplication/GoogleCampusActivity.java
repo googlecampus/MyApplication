@@ -136,6 +136,7 @@ public class GoogleCampusActivity extends Activity {
         queries.add(query2);
         ParseQuery<ParseObject> query = ParseQuery.or(queries);
         query.orderByDescending("createdAt");
+        query.include("comment");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -174,7 +175,16 @@ public class GoogleCampusActivity extends Activity {
             likeNumberView.setText(String.valueOf(object.getInt("like")));
             if (object.has("text")) {
                 textView.setVisibility(View.VISIBLE);
-                textView.setText(object.getString("text"));
+                String content = object.getString("text");
+                if (object.has("comment")) {
+                    List<ParseObject> list = object.getList("comment");
+                    content += "\n\ncomments\n";
+                    for (ParseObject item : list) {
+                        content += "\n";
+                        content += item.getString("name") + ":" + item.getString("text");
+                    }
+                }
+                textView.setText(content);
             } else {
                 textView.setVisibility(View.GONE);
             }
@@ -207,10 +217,15 @@ public class GoogleCampusActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     ParseObject commentObject = new ParseObject("Comment");
-                    commentObject.put("text", "Test");
+                    commentObject.put("text", mEditText.getText().toString());
                     commentObject.put("name", "kmh4500");
                     object.add("comment", commentObject);
-                    object.saveInBackground();
+                    object.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            fetchData();
+                        }
+                    });
                 }
             });
             if (object.has("image")) {
