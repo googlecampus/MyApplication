@@ -43,6 +43,7 @@ public class CustomParsePushBroadcaseReceiver extends ParseBroadcastReceiver {
         NotificationCompat.Builder mBuilder =
         new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.fox)
+                        .setAutoCancel(true)
                         .setContentTitle("Liked! : " + count);
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, GoogleCampusActivity.class);
