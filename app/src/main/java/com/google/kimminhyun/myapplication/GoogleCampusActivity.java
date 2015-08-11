@@ -193,6 +193,17 @@ public class GoogleCampusActivity extends Activity {
                     });
                 }
             });
+            View comment = convertView.findViewById(R.id.comment);
+            comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ParseObject commentObject = new ParseObject("Comment");
+                    commentObject.put("text", "Test");
+                    commentObject.put("name", "kmh4500");
+                    object.add("comment", commentObject);
+                    object.saveInBackground();
+                }
+            });
             if (object.has("image")) {
                 imageView.setVisibility(View.VISIBLE);
                 ParseFile imageFile = object.getParseFile("image");
