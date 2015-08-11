@@ -54,12 +54,6 @@ public class MainActivity extends ActionBarActivity {
         mImage2 = (ImageView) findViewById(R.id.image2);
         mTextView3.setText("Word Changed");
         mImage2.setImageResource(R.drawable.panda);
-
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "D5RlFIWu0Vjf0quz7R4wo5P4IYSLgVvappZ3RwbL", "SiqgMDRNizUr0exYifzaTGKuZfLviVUXpAV9Z85O");
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-        ParsePush.subscribeInBackground("like_number");
     }
 
     private void startGoogleCampusActivity() {
