@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -31,6 +33,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,10 +104,50 @@ public class GoogleCampusActivity extends Activity {
 
     private void dispatchTakeVideoIntent() {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        // create a file to save the video
+        Uri fileUri = getOutputMediaFileUri();
+        // set the image file name
+        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
         }
     }
+
+    /** Create a file Uri for saving an image or video */
+    private static Uri getOutputMediaFileUri(){
+
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+    /** Create a File for saving an image or video */
+    private static File getOutputMediaFile(){
+
+        // Check that the SDCard is mounted
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraVideo");
+
+
+        // Create the storage directory(MyCameraVideo) if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraVideo", "Failed to create directory MyCameraVideo.");
+                return null;
+            }
+        }
+        // Create a media file name
+
+        // For unique file name appending current timeStamp with file name
+        java.util.Date date= new java.util.Date();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                .format(date.getTime());
+
+        File mediaFile;
+        // For unique video file name appending current timeStamp with file name
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                "VID_"+ timeStamp + ".mp4");
+        return mediaFile;
+    }
+
 
     public void onEvent(LikeEvent event) {
         fetchData();
@@ -146,6 +190,24 @@ public class GoogleCampusActivity extends Activity {
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
             Uri videoUri = data.getData();
             mVideoView.setVideoURI(videoUri);
+            Bundle extras = data.getExtras();
+            byte[] byteData = extras.getByteArray("data");
+
+            final ParseFile file = new ParseFile("video.mp4", byteData);
+            file.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    ParseObject testObject = new ParseObject("TestObject");
+                    testObject.put("video", file);
+                    testObject.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Toast.makeText(GoogleCampusActivity.this, "Video Saved Successfully", Toast.LENGTH_LONG).show();
+                            fetchData();
+                        }
+                    });
+                }
+            });
         }
     }
 
