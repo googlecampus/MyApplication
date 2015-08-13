@@ -26,13 +26,21 @@
         android:layout_toLeftOf="@+id/button"
         android:text="@string/camera"/>
 
+    <Button
+        android:id="@+id/video_button"
+        android:layout_below="@+id/edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/camera_button"
+        android:text="@string/video"/>
+
     <ImageView
         android:id="@+id/image"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_below="@+id/edit_text"
         android:background="@android:color/black"
-        android:layout_toLeftOf="@+id/camera_button"/>
+        android:layout_toLeftOf="@+id/video_button"/>
 
     <ListView
         android:id="@+id/list"
