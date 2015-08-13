@@ -173,7 +173,7 @@ public class GoogleCampusActivity extends Activity {
             TextView likeNumberView = (TextView) convertView.findViewById(R.id.like_number);
             final ParseObject object = getItem(position);
             likeNumberView.setText(String.valueOf(object.getInt("like")));
-            if (object.has("text")) {
+            if (object.has("text") || object.has("comment")) {
                 textView.setVisibility(View.VISIBLE);
                 String content = object.getString("text");
                 if (object.has("comment")) {
