@@ -240,9 +240,12 @@ public class GoogleCampusActivity extends Activity {
         query1.whereExists("text");
         ParseQuery<ParseObject> query2 = ParseQuery.getQuery("TestObject");
         query2.whereExists("image");
+        ParseQuery<ParseObject> query3 = ParseQuery.getQuery("TestObject");
+        query2.whereExists("video");
         List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
         queries.add(query1);
         queries.add(query2);
+        queries.add(query3);
         ParseQuery<ParseObject> query = ParseQuery.or(queries);
         query.orderByDescending("createdAt");
         query.include("comment");
@@ -279,9 +282,17 @@ public class GoogleCampusActivity extends Activity {
             }
             TextView textView = (TextView) convertView.findViewById(R.id.text);
             ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
+            VideoView videoView = (VideoView) convertView.findViewById(R.id.video);
             TextView likeNumberView = (TextView) convertView.findViewById(R.id.like_number);
             final ParseObject object = getItem(position);
             likeNumberView.setText(String.valueOf(object.getInt("like")));
+            if (object.has("video")) {
+                videoView.setVisibility(View.VISIBLE);
+                videoView.setVideoURI(Uri.parse(object.getParseFile("video").getUrl()));
+                videoView.start();
+            } else {
+                videoView.setVisibility(View.GONE);
+            }
             if (object.has("text") || object.has("comment")) {
                 textView.setVisibility(View.VISIBLE);
                 String content = object.getString("text");
