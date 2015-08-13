@@ -3,6 +3,7 @@ package com.google.kimminhyun.myapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -47,6 +49,7 @@ public class GoogleCampusActivity extends Activity {
     private List<ParseObject> mList = new ArrayList<ParseObject>();
     private BaseAdapter mAdapter;
     private ImageView mImageView;
+    private VideoView mVideoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +93,7 @@ public class GoogleCampusActivity extends Activity {
         mListView.setAdapter(mAdapter);
 
         mImageView = (ImageView) findViewById(R.id.image);
+        mVideoView = (VideoView) findViewById(R.id.video);
         fetchData();
         EventBus.getDefault().register(this);
     }
@@ -138,6 +142,10 @@ public class GoogleCampusActivity extends Activity {
             });
 
             mImageView.setImageBitmap(imageBitmap);
+        }
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+            Uri videoUri = data.getData();
+            mVideoView.setVideoURI(videoUri);
         }
     }
 
