@@ -40,6 +40,7 @@ import de.greenrobot.event.EventBus;
 public class GoogleCampusActivity extends Activity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_VIDEO_CAPTURE = 2;
 
     private EditText mEditText;
     private ListView mListView;
@@ -70,10 +71,17 @@ public class GoogleCampusActivity extends Activity {
         });
 
         View cameraButton = findViewById(R.id.camera_button);
+        View videoButton = findViewById(R.id.video_button);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
+            }
+        });
+        videoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakeVideoIntent();
             }
         });
 
@@ -84,6 +92,13 @@ public class GoogleCampusActivity extends Activity {
         mImageView = (ImageView) findViewById(R.id.image);
         fetchData();
         EventBus.getDefault().register(this);
+    }
+
+    private void dispatchTakeVideoIntent() {
+        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+        }
     }
 
     public void onEvent(LikeEvent event) {
