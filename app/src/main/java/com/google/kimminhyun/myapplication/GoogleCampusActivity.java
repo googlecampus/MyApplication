@@ -34,6 +34,9 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +50,7 @@ public class GoogleCampusActivity extends Activity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_VIDEO_CAPTURE = 2;
+    private static File mVideoFile;
 
     private EditText mEditText;
     private ListView mListView;
@@ -54,6 +58,7 @@ public class GoogleCampusActivity extends Activity {
     private BaseAdapter mAdapter;
     private ImageView mImageView;
     private VideoView mVideoView;
+    private Uri mFileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +110,9 @@ public class GoogleCampusActivity extends Activity {
     private void dispatchTakeVideoIntent() {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         // create a file to save the video
-        Uri fileUri = getOutputMediaFileUri();
+        mFileUri = getOutputMediaFileUri();
         // set the image file name
-        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
         }
@@ -115,8 +120,8 @@ public class GoogleCampusActivity extends Activity {
 
     /** Create a file Uri for saving an image or video */
     private static Uri getOutputMediaFileUri(){
-
-        return Uri.fromFile(getOutputMediaFile());
+        mVideoFile = getOutputMediaFile();
+        return Uri.fromFile(mVideoFile);
     }
 
     /** Create a File for saving an image or video */
@@ -188,28 +193,47 @@ public class GoogleCampusActivity extends Activity {
             mImageView.setImageBitmap(imageBitmap);
         }
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-            Uri videoUri = data.getData();
-            mVideoView.setVideoURI(videoUri);
-            Bundle extras = data.getExtras();
-            byte[] byteData = extras.getByteArray("data");
+//            Uri videoUri = data.getData();
+            mVideoView.setVideoURI(mFileUri);
+            try {
+                InputStream iStream =  getContentResolver().openInputStream(mFileUri);
+                byte[] byteData = getBytes(iStream);
 
-            final ParseFile file = new ParseFile("video.mp4", byteData);
-            file.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    ParseObject testObject = new ParseObject("TestObject");
-                    testObject.put("video", file);
-                    testObject.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            Toast.makeText(GoogleCampusActivity.this, "Video Saved Successfully", Toast.LENGTH_LONG).show();
-                            fetchData();
-                        }
-                    });
-                }
-            });
+                final ParseFile file = new ParseFile("capture.mp4", byteData);
+                file.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        ParseObject testObject = new ParseObject("TestObject");
+                        testObject.put("video", file);
+                        testObject.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                Toast.makeText(GoogleCampusActivity.this, "Video Saved Successfully", Toast.LENGTH_LONG).show();
+                                fetchData();
+                            }
+                        });
+                    }
+                });
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
 
     private void fetchData() {
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery("TestObject");
